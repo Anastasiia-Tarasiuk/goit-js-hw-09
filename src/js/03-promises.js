@@ -23,10 +23,7 @@ function onFormSubmit(event) {
       }
       createPromise("0", inputDelayEl.value);
     }, inputDelayEl.value);
-  }
- 
-
-
+}
 
 
 function createPromise(position, delay) {
