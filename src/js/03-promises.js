@@ -1,7 +1,8 @@
+import Notiflix from 'notiflix';
+
 const inputDelayEl = document.querySelector('[name="delay"]');
 const inputStepEl = document.querySelector('[name="step"]');
 const inputAmountEl = document.querySelector('[name="amount"]');
-// const btnEl = document.querySelector('button');
 const formEl = document.querySelector('form');
 let timerId = null;
 
@@ -13,16 +14,21 @@ function onFormSubmit(event) {
   event.preventDefault();
   
   let counter = 0;
+  let delayWithStepNumber = Number(inputDelayEl.value);
   
-  
+  timerId = setInterval(() => {
+    counter += 1;
+    if (counter >= inputAmountEl.value) {
+      clearInterval(timerId);
+    }
+    createPromise(counter, delayWithStepNumber);
+    delayWithStepNumber += Number(inputStepEl.value);
 
-    timerId = setInterval(() => {
-      counter += 1;
-      if (counter >= inputAmountEl.value) {
-        clearInterval(timerId);
-      }
-      createPromise("0", inputDelayEl.value);
-    }, inputDelayEl.value);
+    console.log(delayWithStepNumber);
+
+    
+  }, delayWithStepNumber);
+  
 }
 
 
@@ -30,8 +36,8 @@ function createPromise(position, delay) {
 
   const shouldResolve = Math.random() > 0.3;
   if (shouldResolve) {
-    console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+    Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
   } else {
-    console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+    Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
   }
 }

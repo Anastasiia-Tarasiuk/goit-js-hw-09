@@ -1,7 +1,9 @@
 import flatpickr from "flatpickr";
+import Notiflix from 'notiflix';
 import "flatpickr/dist/flatpickr.min.css";
 
 let timer = null;
+let deltaTime = null;
 
 const inputEl = document.querySelector('#datetime-picker');
 const startBtnEl = document.querySelector('button');
@@ -18,16 +20,28 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        // console.log(selectedDates[0]);
 
         // if (selectedDates[0] < this.defaultDate) ЧОМУ this не працює???
         if (selectedDates[0] < options.defaultDate) {
-            alert("Please choose a date in the future");
+            Notiflix.Notify.info('Please choose a date in the future');
         } else {
             startBtnEl.disabled = false;
         }
 
-        let deltaTime = selectedDates[0] - options.defaultDate;
+        deltaTime = selectedDates[0] - options.defaultDate;
+    },
+};
+
+
+startBtnEl.addEventListener('click', onStartBtnClick);
+
+flatpickr(inputEl, options);
+
+
+function onStartBtnClick() {
+    timer = setInterval(() => {
+        console.log("hi");
+        deltaTime -= 1000;
 
         const convertedTime = convertMs(deltaTime);
 
@@ -40,25 +54,8 @@ const options = {
         spanMinutesEl.textContent = minutes;
         spanSecondsEl.textContent = seconds;
 
-    },
-};
-
-
-
-
-startBtnEl.addEventListener('click', onStartBtnClick);
-
-flatpickr(inputEl, options);
-
-
-function onStartBtnClick() {
-    timer = setInterval(() => {
-        console.log("hi");
-       
-        console.log(options.onClose());
     }, 1000);
 }
-
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
