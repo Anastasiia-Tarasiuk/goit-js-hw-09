@@ -32,31 +32,32 @@ const options = {
     },
 };
 
-
 startBtnEl.addEventListener('click', onStartBtnClick);
-
 flatpickr(inputEl, options);
 
-
 function onStartBtnClick() {
+
     timer = setInterval(() => {
-        console.log("hi");
-        deltaTime -= 1000;
-
         const convertedTime = convertMs(deltaTime);
-
-        console.log(convertedTime);
-
+        
         const { days, hours, minutes, seconds } = convertedTime;
-
+        
         spanDaysEl.textContent = days;
         spanHoursEl.textContent = hours;
         spanMinutesEl.textContent = minutes;
         spanSecondsEl.textContent = seconds;
-
+        
+        deltaTime -= 1000;   
+ 
+        if (deltaTime <= 0) {
+            clearInterval(timer);
+            Notiflix.Notify.success('Congratulations! You have won a prize!');;
+        }
+        
     }, 1000);
 }
-
+    
+   
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -76,9 +77,6 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-// console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-// console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-// console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 
 function addLeadingZero(value) {
    return String(value).padStart(2, '0');
