@@ -16,15 +16,24 @@ function onFormSubmit(event) {
   let counter = 0;
   let delayWithStepNumber = Number(inputDelayEl.value);
   
-  timerId = setInterval(() => {
+  setTimeout(() => {
     counter += 1;
-    if (counter >= inputAmountEl.value) {
-      clearInterval(timerId);
-    }
     createPromise(counter, delayWithStepNumber);
     delayWithStepNumber += Number(inputStepEl.value);
 
-  }, delayWithStepNumber);
+
+    timerId = setInterval(() => {
+      counter += 1;
+      if (counter >= inputAmountEl.value) {
+        clearInterval(timerId);
+      }
+      createPromise(counter, delayWithStepNumber);
+      delayWithStepNumber += Number(inputStepEl.value);
+
+    }, inputStepEl.value);
+  }, inputDelayEl.value);
+
+  
   
 }
 
